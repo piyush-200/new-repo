@@ -1,0 +1,9 @@
+{
+  "name": "fullstack-app",
+  "version": "1.0.0",
+  "scripts": {
+    "install": "npm install --prefix client && npm install --prefix server",
+    "build": "npm run build --prefix client",
+    "start": "node server/index.js"
+  }
+}
