@@ -6,7 +6,7 @@
 	"scripts": {
 		"start": "node Index.js",
 		"dev": "nodemon Index.js",
-		"build": "npm install --prefix ./client && npm run build --prefix ./client"
+		"build": "npm install --prefix ./Client && npm run build --prefix ./Client"
 
 	},
 	"keywords": [
