@@ -1,54 +1,41 @@
-const express = require("express");
-const app = express();
-const path = require("path");
-const cookieParser = require("cookie-parser");
-const cors = require("cors");
-const fileUpload = require("express-fileupload");
-const dotenv = require("dotenv");
+import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
+import dotenv from "dotenv";
+import mongoose from "mongoose";
+import cors from "cors";
 
-// Routes
-const userRoutes = require("./Route/User");
-const profileRoutes = require("./Route/Profile");
-const courseRoutes = require("./Route/Course");
-const paymentRoutes = require("./Route/Payment");
-const contactUsRoute = require("./Route/Contact");
-
-// Configs
-const database = require("./Configuration/Database");
-const { cloudinaryConnect } = require("./Configuration/Cloudinary");
-
-// Environment variables
 dotenv.config();
-const PORT = process.env.PORT || 4000;
 
-// Connect to DB and Cloudinary
-database.connect();
-cloudinaryConnect();
-
-// Middlewares
+const app = express();
+app.use(cors());
 app.use(express.json());
-app.use(cookieParser());
-app.use(cors({ origin: "*", credentials: true }));
-app.use(fileUpload({ useTempFiles: true, tempFileDir: "/tmp/" }));
 
-// API routes
-app.use("/api/v1/auth", userRoutes);
-app.use("/api/v1/profile", profileRoutes);
-app.use("/api/v1/course", courseRoutes);
-app.use("/api/v1/payment", paymentRoutes);
-app.use("/api/v1/reach", contactUsRoute);
+// DB CONNECTION
+mongoose
+  .connect(process.env.MONGODB_URL)
+  .then(() => console.log("DB Connection Success"))
+  .catch((error) => console.log(error));
 
-// Serve React frontend build
-const frontendBuildPath = path.join(__dirname, "../Client/build"); // adjust '../Client' if your React folder has a different name
-app.use(express.static(frontendBuildPath));
+// __dirname fix for ES Modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-// React routing fallback
-app.all("/*", (req, res) => {
-  res.sendFile(path.join(frontendBuildPath, "index.html"));
+// Routes example
+app.get("/api", (req, res) => {
+  res.json({ success: true, message: "Welcome To StudyNotion" });
 });
 
-// Start server
+// Serve frontend build
+app.use(express.static(path.join(__dirname, "/client/dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "/client/dist/index.html"));
+});
+
+// PORT
+const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`App is listening at ${PORT}`);
 });
 
