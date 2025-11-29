@@ -17,9 +17,10 @@ const contactUsRoute = require("./Route/Contact");
 const database = require("./Configuration/Database");
 const { cloudinaryConnect } = require("./Configuration/Cloudinary");
 
+// Load environment variables
 dotenv.config();
 
-// Connect to DB and Cloudinary
+// Connect to database and cloudinary
 database.connect();
 cloudinaryConnect();
 
@@ -28,7 +29,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "*", // you can restrict this to frontend URL later
+    origin: "*", // replace "*" with frontend URL in production
     credentials: true,
   })
 );
@@ -39,22 +40,29 @@ app.use(
   })
 );
 
-// API Routes — ensure all paths are relative
+// ------------------------------
+// API Routes (all relative paths!)
+// ------------------------------
 app.use("/api/v1/auth", userRoutes);
 app.use("/api/v1/profile", profileRoutes);
 app.use("/api/v1/course", courseRoutes);
 app.use("/api/v1/payment", paymentRoutes);
 app.use("/api/v1/reach", contactUsRoute);
 
-// Serve frontend build (React)
-const frontendBuildPath = path.join(__dirname, "../Client/build"); // adjust if your folder is different
+// ------------------------------
+// Serve React frontend
+// ------------------------------
+const frontendBuildPath = path.join(__dirname, "../Client/build"); // Adjust to your frontend build folder
 app.use(express.static(frontendBuildPath));
 
-// Handle React routing — all unknown routes go to index.html
+// React catch-all route
 app.get("*", (req, res) => {
   res.sendFile(path.join(frontendBuildPath, "index.html"));
 });
 
+// ------------------------------
 // Start server
+// ------------------------------
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
