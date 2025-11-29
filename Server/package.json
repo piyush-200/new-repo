@@ -5,7 +5,8 @@
 	"main": "Index.js",
 	"scripts": {
 		"start": "node Index.js",
-		"dev": "nodemon Index.js"
+		"dev": "nodemon Index.js",
+		 "build": "cd ../client && npm install && npm run build"
 	},
 	"keywords": [
 		"studynotion-backend"
