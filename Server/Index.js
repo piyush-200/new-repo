@@ -1,4 +1,3 @@
-
 const express = require("express");
 const app = express();
 const path = require("path");
@@ -45,6 +44,18 @@ app.use("/api/v1/course", courseRoutes);
 app.use("/api/v1/payment", paymentRoutes);
 app.use("/api/v1/reach", contactUsRoute);
 
+// ------------------------------
+// Serve React frontend build
+// ------------------------------
+const frontendBuildPath = path.join(__dirname, "build");
+app.use(express.static(frontendBuildPath));
+
+// Catch-all route to serve index.html for React Router
+app.get("*", (req, res) => {
+  res.sendFile(path.join(frontendBuildPath, "index.html"));
+});
+
 // Start server
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`App running on port ${PORT}`));
+
