@@ -43,9 +43,9 @@ const frontendBuildPath = path.join(__dirname, "../Client/build"); // adjust '..
 app.use(express.static(frontendBuildPath));
 
 // React routing fallback
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(frontendBuildPath, "index.html"));
-// });
+app.all("/*", (req, res) => {
+  res.sendFile(path.join(frontendBuildPath, "index.html"));
+});
 
 // Start server
 app.listen(PORT, () => {
