@@ -26,7 +26,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "*", // later you can replace with frontend URL
+    origin: "*", // Replace with frontend URL if needed
     credentials: true,
   })
 );
@@ -37,7 +37,9 @@ app.use(
   })
 );
 
-// API Routes — USE RELATIVE PATHS ONLY
+// ------------------------------
+// API Routes
+// ------------------------------
 app.use("/api/v1/auth", userRoutes);
 app.use("/api/v1/profile", profileRoutes);
 app.use("/api/v1/course", courseRoutes);
@@ -45,17 +47,20 @@ app.use("/api/v1/payment", paymentRoutes);
 app.use("/api/v1/reach", contactUsRoute);
 
 // ------------------------------
-// Serve React frontend build
+// Serve React frontend
 // ------------------------------
 const frontendBuildPath = path.join(__dirname, "build");
 app.use(express.static(frontendBuildPath));
 
-// Catch-all route to serve index.html for React Router
+// React routing support (catch-all)
 app.get("*", (req, res) => {
   res.sendFile(path.join(frontendBuildPath, "index.html"));
 });
 
-// Start server
+// ------------------------------
+// Start Server
+// ------------------------------
 const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => console.log(`App running on port ${PORT}`));
-
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
