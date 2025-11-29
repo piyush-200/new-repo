@@ -5,7 +5,7 @@
 	"main": "Index.js",
 	"scripts": {
 		"start": "node Index.js",
-		"dev": "nodemon Index.js",
+		"dev": "nodemon Index.js"
 	
 
 	},
