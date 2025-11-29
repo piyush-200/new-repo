@@ -45,13 +45,6 @@ app.use("/api/v1/course", courseRoutes);
 app.use("/api/v1/payment", paymentRoutes);
 app.use("/api/v1/reach", contactUsRoute);
 
-// Serve frontend build
-app.use(express.static(path.join(__dirname, "../client/build")));
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/build/index.html"));
-});
-
 // Start server
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`App running on port ${PORT}`));
